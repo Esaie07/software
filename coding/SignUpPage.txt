@@ -1,0 +1,78 @@
+import 'package:flutter/material.dart';
+import 'package:untitled/loginpage.dart';
+
+class SignUpPage extends StatelessWidget {
+  const SignUpPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController numberController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+
+    void _submitForm() {
+      final String email = emailController.text.trim();
+      final String password = passwordController.text;
+
+      // Ajoutez ici la logique pour l'inscription
+      print("Email: $email");
+      print("Password: $password");
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: GestureDetector(
+            onTap: () {
+              print('button clicked');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => loginpage()));
+            },
+            child: Text("Inscription")),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(
+                labelText: "Nom Complet",
+                suffixIcon: Icon(Icons.person),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                  labelText: "Numero de telephone",
+                  suffixIcon: Icon(Icons.phone)),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                  labelText: "Adresse e-mail",
+                  suffixIcon: Icon(Icons.email_outlined)),
+            ),
+            TextFormField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                  labelText: "Mot de passe",
+                  suffixIcon: Icon(Icons.password_outlined)),
+            ),
+            ElevatedButton(
+              onPressed: _submitForm,
+              child: Text(
+                "S'inscrire",
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

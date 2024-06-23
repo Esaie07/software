@@ -1,0 +1,31 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class settings extends StatefulWidget {
+  const settings({Key? key}) : super(key: key);
+
+  @override
+  State<settings> createState() => _settingsState();
+}
+
+class _settingsState extends State<settings> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Settings"),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+            color: Colors.grey, borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(children: [
+            Text("Dark Mode"),
+            CupertinoSwitch(value: true, onChanged: (Value) {})
+          ]),
+        ),
+      ),
+    );
+  }
+}

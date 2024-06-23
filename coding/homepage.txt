@@ -1,0 +1,80 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:untitled/welcomepage.dart';
+
+class MyHomepage2 extends StatefulWidget {
+  const MyHomepage2({super.key});
+
+  @override
+  State<MyHomepage2> createState() => _MyHomepage2State();
+}
+
+class _MyHomepage2State extends State<MyHomepage2> {
+  TextEditingController cityboy = TextEditingController();
+
+  List<dynamic> datas = [];
+
+  Future Getcity() async {
+    final response = await http.get(
+        Uri.parse(
+          'https://api.api-ninjas.com/v1/city?name=${cityboy.text}',
+        ),
+        headers: {'X-Api-Key': 'Wd7aQTh+5YnvpOgjOL+vsg==cAY3cGJkmLxt7ejp'});
+    if (response.statusCode == 200) {
+      print(response.body);
+      setState(() {
+        datas = jsonDecode(response.body);
+      });
+
+      print("List Data : $datas");
+    } else {
+      print(response.body);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: GestureDetector(
+            onTap: () {
+              print('button clicked');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => loginpage()));
+            },
+            child: Text("City Boy")),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: cityboy,
+              decoration: InputDecoration(
+                  suffixIcon: GestureDetector(
+                onTap: () {
+                  Getcity();
+                },
+                child: Icon(Icons.search),
+              )),
+            ),
+          ),
+          Expanded(
+              child: datas.isEmpty
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: datas.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text("${datas[index]['name']}"),
+                          subtitle: Text("${datas[index]["country"]}"),
+                          trailing: Text("${datas[index]["population"]}"),
+                        );
+                      }))
+        ],
+      ),
+    );
+  }
+}

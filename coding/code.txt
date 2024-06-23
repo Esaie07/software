@@ -1,0 +1,90 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class homepage extends StatefulWidget {
+  const homepage({super.key});
+
+  @override
+  State<homepage> createState() => _homepageState();
+}
+
+class _homepageState extends State<homepage> {
+  TextEditingController savecontroller = TextEditingController();
+  String? note;
+
+  Future Savedata() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("savekey", savecontroller.text);
+  }
+
+  Future Getdata() async {
+    final prefs = await SharedPreferences.getInstance();
+    var data = prefs.getString("savekey");
+
+    setState(() {
+      note = data;
+    });
+    print("Saved Data is $data");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Text and Button',
+        ),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              child: TextFormField(
+                controller: savecontroller,
+                decoration: InputDecoration(
+                    suffixIcon: GestureDetector(
+                        onTap: () {
+                          Savedata();
+                        },
+                        child: Icon(Icons.save)),
+                    hintText: "input UI",
+                    border: InputBorder.none),
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            child: Text(note == null ? "No Notes" : note.toString()),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          GestureDetector(
+            onTap: () {
+              Getdata();
+            },
+            child: Container(
+              height: 50,
+              width: 100,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(60),
+                border: Border.all(color: Colors.blue),
+              ),
+              child: Center(
+                child: Text(
+                  "Retrieve",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
